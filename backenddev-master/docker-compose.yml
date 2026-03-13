@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: chatapp-postgres
+    environment:
+      POSTGRES_DB: chatapp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d chatapp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - chatapp-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: chatapp-redis
+    command: redis-server --appendonly yes --requirepass ""
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - chatapp-network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatapp-backend
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/chatapp
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      FRONTEND_URL: http://localhost:5173
+      CORS_ORIGIN: http://localhost:5173
+      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production-at-least-32-characters
+      JWT_EXPIRE: 7d
+      REFRESH_TOKEN_SECRET: your-super-secret-refresh-token-change-this-in-production-at-least-32-characters
+      REFRESH_TOKEN_EXPIRE: 30d
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: ${SMTP_USER:-your-email@gmail.com}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-your-app-password}
+      SMTP_FROM_NAME: Chat Application
+      SMTP_FROM_EMAIL: noreply@chatapp.com
+      GEMINI_API_URL: ${GEMINI_API_URL:-https://api.example.com/v1/generate}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-your-gemini-api-key}
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./src:/app/src
+      - ./package.json:/app/package.json
+      - /app/node_modules
+    networks:
+      - chatapp-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  chatapp-network:
+    driver: bridge
