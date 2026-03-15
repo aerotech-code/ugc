@@ -1,0 +1,47 @@
+{
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "ioredis": "^5.9.2",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.0.2",
+    "pg": "^8.11.3",
+    "socket.io": "^4.7.5",
+    "bcryptjs": "^2.4.3",
+    "aws-sdk": "^2.1541.0",
+    "kafkajs": "^2.2.4",
+    "@elastic/elasticsearch": "^8.12.2",
+    "zod": "^3.22.4",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.2.0",
+    "nodemailer": "^6.10.1"
+  },
+  "name": "chat-app-backend",
+  "version": "1.0.0",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon --exec tsx src/server.ts",
+    "build": "tsc",
+    "serve": "node dist/server.js"
+  },
+  "keywords": ["chat", "ai", "microservices"],
+  "author": "",
+  "license": "ISC",
+  "description": "Backend for AI-powered chat application",
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/pg": "^8.10.9",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/nodemailer": "^6.4.14",
+    "cookie-parser": "^1.4.7",
+    "nodemon": "^3.1.11",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
