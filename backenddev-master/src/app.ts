@@ -8,6 +8,7 @@ import chatRoutes from './routes/chat.routes.js';
 import userRoutes from './routes/user.routes.js';
 import instituteRoutes from './routes/institute.routes.js';
 import notesRoutes from './routes/notes.routes.js';
+import feesRoutes from './erp/fees/fees.routes.js';
 
 const app= express();
 
@@ -30,6 +31,7 @@ app.use('/api/applications', applicationRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/institute', instituteRoutes);
+app.use('/api/v1/fees', feesRoutes);
 app.use('/api', notesRoutes);
 
 export {app}
