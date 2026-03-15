@@ -17,6 +17,7 @@ import applicationRoutes from './routes/application.routes.js';
 import userRoutes from './routes/user.routes.js';
 import instituteRoutes from './routes/institute.routes.js';
 import sandboxRoutes from './routes/sandbox.routes.js';
+import feesRoutes from './erp/fees/fees.routes.js';
 
 // Middleware
 import { errorHandler } from './middleware/error.middleware.js';
@@ -101,11 +102,15 @@ const initializeDatabase = async (): Promise<boolean> => {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
 
-    const schemaPath = path.join(__dirname, 'db', 'schema.sql');
-    const schemaSQL = fs.readFileSync(schemaPath, 'utf8');
+    const schemaPaths = [
+      path.join(__dirname, 'db', 'schema.sql'),
+      path.join(__dirname, 'erp', 'fees', 'fees.schema.sql'),
+    ];
 
-    // Execute the entire schema at once to handle dependencies properly
-    await pool.query(schemaSQL);
+    for (const schemaPath of schemaPaths) {
+      const schemaSQL = fs.readFileSync(schemaPath, 'utf8');
+      await pool.query(schemaSQL);
+    }
 
     console.log('✅ Database schema initialized successfully');
     return true;
@@ -166,6 +171,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/chat", chatRoutes);
 app.use("/api/v1/applications", applicationRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/fees", feesRoutes);
 // Virtual Sandbox API
 app.use('/api/sandbox', sandboxRoutes);
 console.log('✅ Sandbox routes registered at /api/sandbox');
