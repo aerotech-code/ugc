@@ -1,0 +1,727 @@
+{
+    "client":  "Thunder Client",
+    "collectionName":  "Academics API Tests",
+    "dateExported":  "2026-03-19T00:00:00.000Z",
+    "version":  "1.1",
+    "folders":  [
+                    {
+                        "name":  "Courses",
+                        "requests":  [
+                                         {
+                                             "name":  "Create Course",
+                                             "method":  "POST",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/courses",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "code":  "CS101",
+                                                                       "name":  "Introduction to Computer Science",
+                                                                       "description":  "Fundamentals of CS",
+                                                                       "credits":  4
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Get All Courses",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/courses",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Get Course by ID",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/courses/{{courseId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Update Course",
+                                             "method":  "PUT",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/courses/{{courseId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "name":  "Advanced Computer Science",
+                                                                       "description":  "Advanced CS topics",
+                                                                       "credits":  5
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Delete Course",
+                                             "method":  "DELETE",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/courses/{{courseId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                    },
+                    {
+                        "name":  "Syllabus",
+                        "requests":  [
+                                         {
+                                             "name":  "Create Syllabus",
+                                             "method":  "POST",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/syllabus",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "course_id":  "{{courseId}}",
+                                                                       "title":  "CS101 Syllabus",
+                                                                       "description":  "Course outline and objectives",
+                                                                       "content":  "Topics covered in this course"
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Get All Syllabuses",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/syllabus",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Get Syllabus by Course ID",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/syllabus/{{courseId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Update Syllabus",
+                                             "method":  "PUT",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/syllabus/{{syllabusId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "title":  "Updated CS101 Syllabus",
+                                                                       "description":  "Updated course outline",
+                                                                       "content":  "Updated content"
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Delete Syllabus",
+                                             "method":  "DELETE",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/syllabus/{{syllabusId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                    },
+                    {
+                        "name":  "Credits",
+                        "requests":  [
+                                         {
+                                             "name":  "Create Credits",
+                                             "method":  "POST",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/credits",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "course_id":  "{{courseId}}",
+                                                                       "theory_credits":  3,
+                                                                       "practical_credits":  1
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Get All Credits",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/credits",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Get Credits by Course ID",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/credits/{{courseId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Update Credits",
+                                             "method":  "PUT",
+                                             "url":  "{{baseUrl}}/api/academics/curriculum/credits/{{creditId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "theory_credits":  4,
+                                                                       "practical_credits":  2
+                                                                   }
+                                                      }
+                                         }
+                                     ]
+                    },
+                    {
+                        "name":  "Feedback",
+                        "requests":  [
+                                         {
+                                             "name":  "Create Feedback",
+                                             "method":  "POST",
+                                             "url":  "{{baseUrl}}/api/academics/feedback",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "course_id":  "{{courseId}}",
+                                                                       "rating":  5,
+                                                                       "comment":  "Excellent course!",
+                                                                       "instructor_feedback":  "Great teaching"
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Get All Feedback",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/feedback",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Get Feedback by Course",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/feedback/course/{{courseId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Get Feedback by ID",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/feedback/{{feedbackId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Delete Feedback",
+                                             "method":  "DELETE",
+                                             "url":  "{{baseUrl}}/api/academics/feedback/{{feedbackId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                    },
+                    {
+                        "name":  "Timetable",
+                        "requests":  [
+                                         {
+                                             "name":  "Create Timetable",
+                                             "method":  "POST",
+                                             "url":  "{{baseUrl}}/api/academics/timetable",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "name":  "Fall 2024 Timetable",
+                                                                       "semester_id":  "{{semesterId}}",
+                                                                       "department_id":  "{{deptId}}",
+                                                                       "schedule":  [
+
+                                                                                    ]
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Get All Timetables",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/timetable",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Get Timetable by Semester",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/timetable/semester/{{semesterId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Get Timetable by Department",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/timetable/department/{{deptId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Update Timetable",
+                                             "method":  "PUT",
+                                             "url":  "{{baseUrl}}/api/academics/timetable/{{timetableId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "name":  "Updated Fall 2024 Timetable",
+                                                                       "schedule":  [
+
+                                                                                    ]
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Delete Timetable",
+                                             "method":  "DELETE",
+                                             "url":  "{{baseUrl}}/api/academics/timetable/{{timetableId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                    },
+                    {
+                        "name":  "Assignments",
+                        "requests":  [
+                                         {
+                                             "name":  "Create Assignment",
+                                             "method":  "POST",
+                                             "url":  "{{baseUrl}}/api/academics/assignments",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "course_id":  "{{courseId}}",
+                                                                       "title":  "Assignment 1: Basics",
+                                                                       "description":  "Complete the following tasks",
+                                                                       "due_date":  "2026-04-19T23:59:59Z",
+                                                                       "instructions":  "Follow the guidelines"
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Get All Assignments",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/assignments",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Get Assignments by Course",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/assignments/course/{{courseId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Get Assignment by ID",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/assignments/{{assignmentId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Submit Assignment",
+                                             "method":  "POST",
+                                             "url":  "{{baseUrl}}/api/academics/assignments/{{assignmentId}}/submit",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "submission_text":  "Here is my submission",
+                                                                       "file_url":  "https://example.com/file.pdf",
+                                                                       "submitted_at":  "2026-03-19T10:30:00Z"
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Get Assignment Submissions",
+                                             "method":  "GET",
+                                             "url":  "{{baseUrl}}/api/academics/assignments/{{assignmentId}}/submissions",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "name":  "Update Assignment",
+                                             "method":  "PUT",
+                                             "url":  "{{baseUrl}}/api/academics/assignments/{{assignmentId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Content-Type",
+                                                                 "value":  "application/json"
+                                                             },
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ],
+                                             "body":  {
+                                                          "mode":  "json",
+                                                          "json":  {
+                                                                       "title":  "Updated Assignment 1: Advanced Basics",
+                                                                       "description":  "Updated tasks",
+                                                                       "due_date":  "2026-04-25T23:59:59Z"
+                                                                   }
+                                                      }
+                                         },
+                                         {
+                                             "name":  "Delete Assignment",
+                                             "method":  "DELETE",
+                                             "url":  "{{baseUrl}}/api/academics/assignments/{{assignmentId}}",
+                                             "headers":  [
+                                                             {
+                                                                 "key":  "Authorization",
+                                                                 "value":  "Bearer {{authToken}}"
+                                                             },
+                                                             {
+                                                                 "key":  "X-Institution-ID",
+                                                                 "value":  "550e8400-e29b-41d4-a716-446655440000"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                    }
+                ],
+    "variables":  [
+                      {
+                          "name":  "baseUrl",
+                          "value":  "http://localhost:3000"
+                      },
+                      {
+                          "name":  "authToken",
+                          "value":  ""
+                      },
+                      {
+                          "name":  "courseId",
+                          "value":  ""
+                      },
+                      {
+                          "name":  "syllabusId",
+                          "value":  ""
+                      },
+                      {
+                          "name":  "creditId",
+                          "value":  ""
+                      },
+                      {
+                          "name":  "feedbackId",
+                          "value":  ""
+                      },
+                      {
+                          "name":  "timetableId",
+                          "value":  ""
+                      },
+                      {
+                          "name":  "assignmentId",
+                          "value":  ""
+                      },
+                      {
+                          "name":  "semesterId",
+                          "value":  ""
+                      },
+                      {
+                          "name":  "deptId",
+                          "value":  ""
+                      }
+                  ]
+}
