@@ -19,6 +19,8 @@ import instituteRoutes from './routes/institute.routes.js';
 import sandboxRoutes from './routes/sandbox.routes.js';
 import feesRoutes from './erp/fees/fees.routes.js';
 import academicsRoutes from './routes/academics.routes.js';
+   
+
 
 // Middleware
 import { errorHandler } from './middleware/error.middleware.js';
