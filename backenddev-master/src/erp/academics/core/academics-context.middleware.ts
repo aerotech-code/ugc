@@ -1,0 +1,35 @@
+import { Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../../../middleware/auth.middleware.js';
+import { createError } from '../../../middleware/error.middleware.js';
+import { validateUUID } from '../../../middleware/validation.middleware.js';
+
+export interface AcademicsContext {
+  institutionId: string;
+  academicYear: string;
+}
+
+export interface AcademicsRequest extends AuthenticatedRequest {
+  academicsContext?: AcademicsContext;
+}
+
+export const requireAcademicsContext = (req: AcademicsRequest, _res: Response, next: NextFunction): void => {
+  const institutionId = req.header('X-Institution-ID');
+  const academicYear = req.header('X-Academic-Year');
+
+  if (!institutionId) {
+    throw createError('X-Institution-ID header is required', 400);
+  }
+
+  validateUUID(institutionId, 'X-Institution-ID');
+
+  if (!academicYear || academicYear.trim().length === 0) {
+    throw createError('X-Academic-Year header is required', 400);
+  }
+
+  req.academicsContext = {
+    institutionId,
+    academicYear: academicYear.trim(),
+  };
+
+  next();
+};
