@@ -3,7 +3,7 @@ import { authenticateToken } from '../../middleware/auth.middleware.js';
 import { asyncHandler, createError } from '../../middleware/error.middleware.js';
 import { requireAcademicsContext, AcademicsRequest } from './academics-context.middleware.js';
 import { validateRequired, validateUUID } from '../../middleware/validation.middleware.js';
-import CourseModel from './academics-course.model.js';
+import CourseModel from './course/academics-course.model.js';
 
 const router = Router();
 

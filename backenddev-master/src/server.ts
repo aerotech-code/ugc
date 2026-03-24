@@ -19,6 +19,7 @@ import instituteRoutes from './routes/institute.routes.js';
 import sandboxRoutes from './routes/sandbox.routes.js';
 import feesRoutes from './erp/fees/fees.routes.js';
 import academicsRoutes from './routes/academics.routes.js';
+import administrativeRoutes from './routes/administrative.routes.js';
 
 // Middleware
 import { errorHandler } from './middleware/error.middleware.js';
@@ -106,7 +107,9 @@ const initializeDatabase = async (): Promise<boolean> => {
     const schemaPaths = [
       path.join(__dirname, 'db', 'schema.sql'),
       path.join(__dirname, 'erp', 'fees', 'fees.schema.sql'),
-      path.join(__dirname, 'erp', 'academics', 'academics.schema.sql'),
+      path.join(__dirname, 'erp', 'academics', 'schema', 'academics.schema.sql'),
+      path.join(__dirname, 'erp', 'administrative', 'help-desk', 'help-desk.schema.sql'),
+      path.join(__dirname, 'erp', 'administrative', 'student-admission', 'student-admission.schema.sql'),
     ];
 
     for (const schemaPath of schemaPaths) {
@@ -175,6 +178,7 @@ app.use("/api/v1/applications", applicationRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/fees", feesRoutes);
 app.use("/api/academics", academicsRoutes);
+app.use("/api/administrative", administrativeRoutes);
 // Virtual Sandbox API
 app.use('/api/sandbox', sandboxRoutes);
 console.log('✅ Sandbox routes registered at /api/sandbox');

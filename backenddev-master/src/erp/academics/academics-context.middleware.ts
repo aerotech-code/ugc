@@ -26,3 +26,5 @@ export const requireAcademicsContext = (req: AcademicsRequest, _res: Response, n
 
   next();
 };
+export { validateUUID };
+

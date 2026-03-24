@@ -1,6 +1,6 @@
-import { query } from '../../db/postgres.js';
-import { createError } from '../../middleware/error.middleware.js';
-import type { AcademicsContext } from './academics-context.middleware.js';
+import { query } from '../../../db/postgres.js';
+import { createError } from '../../../middleware/error.middleware.js';
+import type { AcademicsContext } from '../academics-context.middleware.js';
 
 type JsonMap = Record<string, any>;
 
