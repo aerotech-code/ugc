@@ -81,5 +81,17 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"
-  }
+  },
+  "description": "A **full-stack AI-powered chat application** with user management, real-time messaging, application workflows, institute management, and admin dashboard.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aerotech-code/ugc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aerotech-code/ugc/issues"
+  },
+  "homepage": "https://github.com/aerotech-code/ugc#readme"
 }

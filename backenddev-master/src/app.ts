@@ -10,6 +10,7 @@ import instituteRoutes from './routes/institute.routes.js';
 import notesRoutes from './routes/notes.routes.js';
 import feesRoutes from './erp/fees/fees.routes.js';
 import academicsRoutes from './erp/academics/core/academics.routes.js';
+import administrativeRoutes from './routes/administrative.routes.js';
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/institute', instituteRoutes);
 app.use('/api/v1/fees', feesRoutes);
 app.use('/api/academics', academicsRoutes);
+app.use('/api/administrative', administrativeRoutes);
 app.use('/api', notesRoutes);
 
 export { app }

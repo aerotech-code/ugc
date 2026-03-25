@@ -19,6 +19,7 @@ import instituteRoutes from './routes/institute.routes.js';
 import sandboxRoutes from './routes/sandbox.routes.js';
 import feesRoutes from './erp/fees/fees.routes.js';
 import academicsRoutes from './erp/academics/core/academics.routes.js';
+import administrativeRoutes from './routes/administrative.routes.js';
 
 // Middleware
 import { errorHandler } from './middleware/error.middleware.js';
@@ -176,6 +177,7 @@ app.use("/api/v1/applications", applicationRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/fees", feesRoutes);
 app.use("/api/academics", academicsRoutes);
+app.use("/api/administrative", administrativeRoutes);
 // Virtual Sandbox API
 app.use('/api/sandbox', sandboxRoutes);
 console.log('✅ Sandbox routes registered at /api/sandbox');
