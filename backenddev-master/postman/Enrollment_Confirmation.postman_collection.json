@@ -1,0 +1,568 @@
+{
+  "info": {
+    "_postman_id": "enrollment-confirmation-api",
+    "name": "Enrollment Confirmation API",
+    "description": "Postman collection for Enrollment Confirmation module.\n\n**Base URL:** `http://localhost:3000`\n\n**Setup:**\n1. Import this collection.\n2. Set `authToken` variable with a valid JWT from your login endpoint.\n3. Run requests in order: Confirm → Pay Fees → Get Details → Approve → Receipt → ID Card.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "PASTE_YOUR_JWT_TOKEN_HERE",
+      "type": "string"
+    },
+    {
+      "key": "appId",
+      "value": "",
+      "type": "string",
+      "description": "Auto-set after Confirm Enrollment request"
+    }
+  ],
+  "item": [
+    {
+      "name": "1 - Confirm Enrollment & Submit Fee Proof",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"app_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"student_name\": \"Rahul Sharma\",\n  \"course\": \"B.Tech Computer Science\",\n  \"academic_year\": \"2024-2025\",\n  \"fee_amount\": 125000,\n  \"fee_proof_url\": \"https://storage.example.com/fee-proofs/receipt_rahul.pdf\",\n  \"payment_reference\": \"PAY-REF-2024-001\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/admissions/enrollment/confirm",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admissions", "enrollment", "confirm"]
+        },
+        "description": "Confirms enrollment for a student and submits fee proof document URL.\n\n**Required fields:** app_id (UUID), student_name, course, academic_year, fee_amount\n**Optional fields:** fee_proof_url, payment_reference\n\nAuto-generates an Enrollment ID in format: `ENR-YYYY-XXXXX`"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Response has success=true', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.success).to.be.true;",
+              "});",
+              "",
+              "pm.test('Enrollment ID is generated', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data.enrollment_id).to.match(/^ENR-\\d{4}-\\d{5}$/);",
+              "});",
+              "",
+              "// Auto-save app_id for use in subsequent requests",
+              "const json = pm.response.json();",
+              "if (json.data && json.data.app_id) {",
+              "  pm.collectionVariables.set('appId', json.data.app_id);",
+              "  console.log('✅ appId saved:', json.data.app_id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Success - 201 Created",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"app_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"student_name\": \"Rahul Sharma\",\n  \"course\": \"B.Tech Computer Science\",\n  \"academic_year\": \"2024-2025\",\n  \"fee_amount\": 125000,\n  \"fee_proof_url\": \"https://storage.example.com/fee-proofs/receipt_rahul.pdf\",\n  \"payment_reference\": \"PAY-REF-2024-001\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/confirm"
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "body": "{\n  \"success\": true,\n  \"message\": \"Enrollment confirmed successfully\",\n  \"data\": {\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"app_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"enrollment_id\": \"ENR-2024-47382\",\n    \"student_name\": \"Rahul Sharma\",\n    \"course\": \"B.Tech Computer Science\",\n    \"academic_year\": \"2024-2025\",\n    \"fee_amount\": \"125000.00\",\n    \"fee_proof_url\": \"https://storage.example.com/fee-proofs/receipt_rahul.pdf\",\n    \"payment_status\": \"initiated\",\n    \"payment_reference\": \"PAY-REF-2024-001\",\n    \"payment_gateway_txn_id\": null,\n    \"enrollment_status\": \"pending\",\n    \"approved_by\": null,\n    \"approved_at\": null,\n    \"created_at\": \"2024-03-31T09:25:00.000Z\",\n    \"updated_at\": \"2024-03-31T09:25:00.000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "2 - Get Enrollment Details",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admissions/enrollment/{{appId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admissions", "enrollment", "{{appId}}"]
+        },
+        "description": "Fetches full enrollment details by Application ID (appId).\n\nUses the `appId` variable auto-saved from Request #1."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has enrollment data', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.success).to.be.true;",
+              "  pm.expect(json.data).to.have.property('enrollment_id');",
+              "  pm.expect(json.data).to.have.property('enrollment_status');",
+              "  pm.expect(json.data).to.have.property('payment_status');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Success - 200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/550e8400-e29b-41d4-a716-446655440000"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"app_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"enrollment_id\": \"ENR-2024-47382\",\n    \"student_name\": \"Rahul Sharma\",\n    \"course\": \"B.Tech Computer Science\",\n    \"academic_year\": \"2024-2025\",\n    \"fee_amount\": \"125000.00\",\n    \"fee_proof_url\": \"https://storage.example.com/fee-proofs/receipt_rahul.pdf\",\n    \"payment_status\": \"initiated\",\n    \"payment_reference\": \"PAY-REF-2024-001\",\n    \"enrollment_status\": \"pending\",\n    \"approved_by\": null,\n    \"approved_at\": null,\n    \"created_at\": \"2024-03-31T09:25:00.000Z\",\n    \"updated_at\": \"2024-03-31T09:25:00.000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "3 - Initiate Fee Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"app_id\": \"{{appId}}\",\n  \"payment_gateway_txn_id\": \"TXN-RAZORPAY-20240331-98765\",\n  \"payment_mode\": \"UPI\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/admissions/enrollment/fees/pay",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admissions", "enrollment", "fees", "pay"]
+        },
+        "description": "Records the fee payment made via payment gateway.\n\nMarks payment_status as `paid` and auto-generates a fee receipt with a unique receipt number `RCPT-<timestamp>`.\n\n**Required:** app_id, payment_gateway_txn_id\n**Optional:** payment_mode (e.g. UPI, Card, Net Banking)"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Payment status is paid', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data.enrollment.payment_status).to.eql('paid');",
+              "});",
+              "",
+              "pm.test('Receipt is generated', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data.receipt).to.have.property('receipt_number');",
+              "  pm.expect(json.data.receipt.receipt_number).to.match(/^RCPT-\\d+$/);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Success - 200 OK",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"app_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"payment_gateway_txn_id\": \"TXN-RAZORPAY-20240331-98765\",\n  \"payment_mode\": \"UPI\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/fees/pay"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"message\": \"Fee payment recorded successfully\",\n  \"data\": {\n    \"enrollment\": {\n      \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"app_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"enrollment_id\": \"ENR-2024-47382\",\n      \"payment_status\": \"paid\",\n      \"payment_gateway_txn_id\": \"TXN-RAZORPAY-20240331-98765\",\n      \"enrollment_status\": \"pending\"\n    },\n    \"receipt\": {\n      \"id\": \"r1r2r3r4-s5t6-7890-uvwx-yz1234567890\",\n      \"enrollment_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"receipt_number\": \"RCPT-1711879500000\",\n      \"amount\": \"125000.00\",\n      \"payment_date\": \"2024-03-31T09:25:00.000Z\",\n      \"payment_mode\": \"UPI\",\n      \"transaction_id\": \"TXN-RAZORPAY-20240331-98765\"\n    }\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "4 - Admin Approve Enrollment",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admissions/enrollment/{{appId}}/approve",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admissions", "enrollment", "{{appId}}", "approve"]
+        },
+        "description": "Admin approves the enrollment.\n\nSets `enrollment_status` to `approved`, records the approving admin's user ID and timestamp.\n\n**Note:** The approving admin is detected from the JWT token automatically."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Enrollment status is approved', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data.enrollment_status).to.eql('approved');",
+              "});",
+              "",
+              "pm.test('approved_by is set', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data.approved_by).to.not.be.null;",
+              "});",
+              "",
+              "pm.test('approved_at is set', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data.approved_at).to.not.be.null;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Success - 200 OK",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/550e8400-e29b-41d4-a716-446655440000/approve"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"message\": \"Enrollment approved successfully\",\n  \"data\": {\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"app_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"enrollment_id\": \"ENR-2024-47382\",\n    \"student_name\": \"Rahul Sharma\",\n    \"course\": \"B.Tech Computer Science\",\n    \"academic_year\": \"2024-2025\",\n    \"fee_amount\": \"125000.00\",\n    \"payment_status\": \"paid\",\n    \"enrollment_status\": \"approved\",\n    \"approved_by\": \"admin-uuid-here\",\n    \"approved_at\": \"2024-03-31T09:30:00.000Z\",\n    \"updated_at\": \"2024-03-31T09:30:00.000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "5 - Get Fee Payment Receipt",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admissions/enrollment/{{appId}}/receipt",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admissions", "enrollment", "{{appId}}", "receipt"]
+        },
+        "description": "Downloads/retrieves fee payment receipt for the given application.\n\nReturns receipt details along with student enrollment info.\n\n⚠️ Will return 404 if fee payment has not been completed yet."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Receipt has required fields', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data).to.have.property('receipt_number');",
+              "  pm.expect(json.data).to.have.property('amount');",
+              "  pm.expect(json.data).to.have.property('transaction_id');",
+              "  pm.expect(json.data).to.have.property('enrollment_details');",
+              "});",
+              "",
+              "pm.test('Enrollment details are present', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data.enrollment_details).to.have.property('student_name');",
+              "  pm.expect(json.data.enrollment_details).to.have.property('course');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Success - 200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/550e8400-e29b-41d4-a716-446655440000/receipt"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"message\": \"Fee payment receipt retrieved successfully\",\n  \"data\": {\n    \"id\": \"r1r2r3r4-s5t6-7890-uvwx-yz1234567890\",\n    \"enrollment_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"receipt_number\": \"RCPT-1711879500000\",\n    \"amount\": \"125000.00\",\n    \"payment_date\": \"2024-03-31T09:25:00.000Z\",\n    \"payment_mode\": \"UPI\",\n    \"transaction_id\": \"TXN-RAZORPAY-20240331-98765\",\n    \"created_at\": \"2024-03-31T09:25:00.000Z\",\n    \"enrollment_details\": {\n      \"student_name\": \"Rahul Sharma\",\n      \"course\": \"B.Tech Computer Science\",\n      \"academic_year\": \"2024-2025\",\n      \"enrollment_id\": \"ENR-2024-47382\",\n      \"payment_status\": \"paid\"\n    }\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "6 - Get Enrollment ID Card",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admissions/enrollment/{{appId}}/id-card",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admissions", "enrollment", "{{appId}}", "id-card"]
+        },
+        "description": "Retrieves enrollment ID card data for the student.\n\nReturns enrollment ID, name, course, academic year, and issue date.\n\n⚠️ Will return **403** if enrollment is not yet approved by admin.\n\n**Run Request #4 (Approve) before calling this.**"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('ID Card has all required fields', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data).to.have.property('enrollment_id');",
+              "  pm.expect(json.data).to.have.property('student_name');",
+              "  pm.expect(json.data).to.have.property('course');",
+              "  pm.expect(json.data).to.have.property('academic_year');",
+              "  pm.expect(json.data).to.have.property('enrollment_status');",
+              "  pm.expect(json.data).to.have.property('issued_at');",
+              "});",
+              "",
+              "pm.test('Enrollment status is approved', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.data.enrollment_status).to.eql('approved');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Success - 200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/550e8400-e29b-41d4-a716-446655440000/id-card"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"message\": \"Enrollment ID card data retrieved successfully\",\n  \"data\": {\n    \"enrollment_id\": \"ENR-2024-47382\",\n    \"student_name\": \"Rahul Sharma\",\n    \"course\": \"B.Tech Computer Science\",\n    \"academic_year\": \"2024-2025\",\n    \"enrollment_status\": \"approved\",\n    \"payment_status\": \"paid\",\n    \"issued_at\": \"2024-03-31T09:30:00.000Z\"\n  }\n}"
+        },
+        {
+          "name": "Error - 403 Not Approved Yet",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/550e8400-e29b-41d4-a716-446655440000/id-card"
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "body": "{\n  \"success\": false,\n  \"message\": \"ID card is only available after enrollment is approved\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "--- ERROR CASES ---",
+      "item": [
+        {
+          "name": "Invalid appId (bad UUID)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/not-a-valid-uuid",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admissions", "enrollment", "not-a-valid-uuid"]
+            },
+            "description": "Test case: sending an invalid UUID — should return 400 Bad Request."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 for invalid UUID', function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Confirm Enrollment - Missing Required Fields",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"student_name\": \"Missing Fields Student\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/confirm",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admissions", "enrollment", "confirm"]
+            },
+            "description": "Test case: missing required fields — should return 400."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 for missing fields', function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Receipt - No Payment Done Yet",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/550e8400-e29b-41d4-a716-000000000000/receipt",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admissions", "enrollment", "550e8400-e29b-41d4-a716-000000000000", "receipt"]
+            },
+            "description": "Test case: requesting receipt for an app that hasn't paid fees — should return 404."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 when no receipt found', function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unauthenticated Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admissions/enrollment/{{appId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admissions", "enrollment", "{{appId}}"]
+            },
+            "description": "Test case: request without Authorization header — should return 401."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 401 for unauthenticated request', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
