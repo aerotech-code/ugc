@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
-const ACCESS_TOKEN= process.env.ACCESS_TOKEN || "devsecret"
-const REFRESH_TOKEN=process.env.REFRESH_TOKEN || "devsecret"
+const ACCESS_TOKEN= process.env.JWT_SECRET || process.env.ACCESS_TOKEN || "devsecret"
+const REFRESH_TOKEN=process.env.REFRESH_TOKEN_SECRET || process.env.REFRESH_TOKEN || "devsecret"
 
 
 export function generateAccessToken(payload: {userId: string; role: string;}) {

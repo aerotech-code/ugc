@@ -38,7 +38,7 @@ export interface EmailConfig {
   host: string;
   port: number;
   user: string;
-  password: string;
+  password: string;  
   fromName: string;
   fromEmail: string;
 }

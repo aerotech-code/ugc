@@ -22,6 +22,8 @@ import academicsRoutes from './routes/academics.routes.js';
 import admissionRoutes from './erp/admission/admission.routes.js';
 import administrativeRoutes from './routes/administrative.routes.js';
 import enrollmentRoutes from './Admission/enrollment/enrollment.routes.js';
+import meritRoutes from './erp/admission/merit-result/merit-result.routes.js';
+import seatRoutes from './erp/admission/seat-allocation/seat-allocation.routes.js';
 
 // Middleware
 import { errorHandler } from './middleware/error.middleware.js';
@@ -105,12 +107,15 @@ const initializeDatabase = async (): Promise<boolean> => {
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
+    const srcDir = path.join(__dirname, '..', 'src');
 
     const schemaPaths = [
       path.join(__dirname, 'db', 'schema.sql'),
       path.join(__dirname, 'erp', 'fees', 'fees.schema.sql'),
       path.join(__dirname, 'erp', 'academics', 'schema', 'academics.schema.sql'),
       path.join(__dirname, 'erp', 'admission', 'admission.schema.sql'),
+      path.join(__dirname, 'erp', 'admission', 'merit-result', 'merit-result.schema.sql'),
+      path.join(__dirname, 'erp', 'admission', 'seat-allocation', 'seat-allocation.schema.sql'),
       path.join(__dirname, 'erp', 'administrative', 'help-desk', 'help-desk.schema.sql'),
       path.join(__dirname, 'erp', 'administrative', 'student-admission', 'student-admission.schema.sql'),
       path.join(__dirname, 'erp', 'Admission', 'enrollment', 'enrollment.schema.sql'),
@@ -182,10 +187,12 @@ app.use("/api/v1/applications", applicationRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/fees", feesRoutes);
 app.use("/api/academics", academicsRoutes);
-app.use("/api/admissions", enrollmentRoutes);
+app.use("/api/admissions/enrollment", enrollmentRoutes);
+app.use("/api/admissions/merit", meritRoutes);
+app.use("/api/admissions/seats", seatRoutes);
 app.use("/api/administrative", administrativeRoutes);
-app.use("/api/admission-legacy", admissionRoutes); // Preserve old for now just in case
-console.log('✅ Administrative and Enrollment routes registered');
+app.use("/api/admission-legacy", admissionRoutes);
+console.log('✅ Administrative, Enrollment, Merit, and Seat routes registered');
 // Virtual Sandbox API
 app.use('/api/sandbox', sandboxRoutes);
 console.log('✅ Sandbox routes registered at /api/sandbox');
