@@ -1,57 +1,62 @@
--- Admission Schema
+-- Admissions Module Schema
 
-CREATE TABLE IF NOT EXISTS admission_courses (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  course_name VARCHAR(255) NOT NULL,
-  total_seats INTEGER NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
+-- Applications Table
 CREATE TABLE IF NOT EXISTS admission_applications (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  course_id UUID REFERENCES admission_courses(id),
-  applicant_name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  score DECIMAL(5, 2) NOT NULL,
-  category VARCHAR(50) NOT NULL, -- General, OBC, SC, ST, etc.
-  status VARCHAR(50) DEFAULT 'applied', -- applied, merit_listed, allocated, cancelled
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    institution_id UUID NOT NULL,
+    applicant_name VARCHAR(255) NOT NULL,
+    applicant_email VARCHAR(255) NOT NULL,
+    applicant_phone VARCHAR(50),
+    course_id UUID,
+    status VARCHAR(50) DEFAULT 'submitted', -- submitted, under_review, accepted, rejected, withdrawn
+    submitted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID,
+    updated_by UUID
 );
 
-CREATE TABLE IF NOT EXISTS merit_list (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  application_id UUID REFERENCES admission_applications(id) ON DELETE CASCADE,
-  course_id UUID REFERENCES admission_courses(id),
-  score DECIMAL(5, 2) NOT NULL,
-  rank INTEGER NOT NULL,
-  category VARCHAR(50) NOT NULL,
-  is_published BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- Documents Table
+CREATE TABLE IF NOT EXISTS admission_documents (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    institution_id UUID NOT NULL,
+    application_id UUID NOT NULL REFERENCES admission_applications(id) ON DELETE CASCADE,
+    document_type VARCHAR(100) NOT NULL, -- e.g., transcript, id_proof, photo
+    file_url TEXT NOT NULL,
+    status VARCHAR(50) DEFAULT 'pending', -- pending, verified, rejected
+    rejection_reason TEXT,
+    uploaded_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    verified_at TIMESTAMP WITH TIME ZONE,
+    uploaded_by UUID,
+    verified_by UUID
 );
 
-CREATE TABLE IF NOT EXISTS seat_allocations (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  application_id UUID REFERENCES admission_applications(id) ON DELETE CASCADE,
-  course_id UUID REFERENCES admission_courses(id),
-  category VARCHAR(50) NOT NULL,
-  status VARCHAR(50) DEFAULT 'allocated', -- allocated, upgraded, cancelled
-  allocated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- Entrance Tests Table
+CREATE TABLE IF NOT EXISTS admission_entrance_tests (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    institution_id UUID NOT NULL,
+    test_name VARCHAR(255) NOT NULL,
+    test_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    venue VARCHAR(255),
+    max_score INTEGER,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID
 );
 
--- Seed some courses for testing
-INSERT INTO admission_courses (course_name, total_seats) VALUES 
-('Computer Science', 50),
-('Electronics', 40),
-('Mechanical', 30)
-ON CONFLICT DO NOTHING;
+-- Entrance Test Registrations / Results Table
+CREATE TABLE IF NOT EXISTS admission_test_registrations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    institution_id UUID NOT NULL,
+    application_id UUID NOT NULL REFERENCES admission_applications(id) ON DELETE CASCADE,
+    test_id UUID NOT NULL REFERENCES admission_entrance_tests(id) ON DELETE CASCADE,
+    admit_card_url TEXT,
+    score INTEGER,
+    result_status VARCHAR(50) DEFAULT 'pending', -- pending, passed, failed
+    registered_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(application_id, test_id)
+);
 
--- Seed some applications for testing
-INSERT INTO admission_applications (applicant_name, email, course_id, score, category)
-SELECT 'John Doe', 'john.doe@example.com', id, 85.5, 'General' FROM admission_courses WHERE course_name = 'Computer Science'
-UNION ALL
-SELECT 'Jane Smith', 'jane.smith@example.com', id, 92.0, 'General' FROM admission_courses WHERE course_name = 'Computer Science'
-UNION ALL
-SELECT 'Alice Johnson', 'alice.j@example.com', id, 78.5, 'OBC' FROM admission_courses WHERE course_name = 'Computer Science'
-UNION ALL
-SELECT 'Bob Brown', 'bob.b@example.com', id, 88.0, 'SC' FROM admission_courses WHERE course_name = 'Computer Science'
-ON CONFLICT DO NOTHING;
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_admission_applications_inst ON admission_applications(institution_id);
+CREATE INDEX IF NOT EXISTS idx_admission_documents_app ON admission_documents(application_id);
+CREATE INDEX IF NOT EXISTS idx_admission_test_reg_app ON admission_test_registrations(application_id);

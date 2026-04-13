@@ -20,6 +20,7 @@ import sandboxRoutes from './routes/sandbox.routes.js';
 import feesRoutes from './erp/fees/fees.routes.js';
 import academicsRoutes from './routes/academics.routes.js';
 import administrativeRoutes from './routes/administrative.routes.js';
+import admissionLegacyRoutes from './erp/admission/admission.routes.js';
 import enrollmentRoutes from './routes/enrollment.routes.js';
 import meritRoutes from './erp/admission/merit-result/merit-result.routes.js';
 import seatRoutes from './erp/admission/seat-allocation/seat-allocation.routes.js';
@@ -188,7 +189,8 @@ app.use("/api/admissions/enrollment", enrollmentRoutes);
 app.use("/api/admissions/merit", meritRoutes);
 app.use("/api/admissions/seats", seatRoutes);
 app.use("/api/administrative", administrativeRoutes);
-console.log('✅ Administrative, Enrollment, Merit, and Seat routes registered');
+app.use("/api/admission-legacy", admissionLegacyRoutes);
+console.log('✅ Administrative, Enrollment, Merit, Seat, and Legacy Admission routes registered');
 // Virtual Sandbox API
 app.use('/api/sandbox', sandboxRoutes);
 console.log('✅ Sandbox routes registered at /api/sandbox');
