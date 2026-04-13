@@ -19,9 +19,8 @@ import instituteRoutes from './routes/institute.routes.js';
 import sandboxRoutes from './routes/sandbox.routes.js';
 import feesRoutes from './erp/fees/fees.routes.js';
 import academicsRoutes from './routes/academics.routes.js';
-import admissionRoutes from './erp/admission/admission.routes.js';
 import administrativeRoutes from './routes/administrative.routes.js';
-import enrollmentRoutes from './Admission/enrollment/enrollment.routes.js';
+import enrollmentRoutes from './routes/enrollment.routes.js';
 import meritRoutes from './erp/admission/merit-result/merit-result.routes.js';
 import seatRoutes from './erp/admission/seat-allocation/seat-allocation.routes.js';
 
@@ -114,11 +113,9 @@ const initializeDatabase = async (): Promise<boolean> => {
       path.join(__dirname, 'erp', 'fees', 'fees.schema.sql'),
       path.join(__dirname, 'erp', 'academics', 'schema', 'academics.schema.sql'),
       path.join(__dirname, 'erp', 'admission', 'admission.schema.sql'),
-      path.join(__dirname, 'erp', 'admission', 'merit-result', 'merit-result.schema.sql'),
-      path.join(__dirname, 'erp', 'admission', 'seat-allocation', 'seat-allocation.schema.sql'),
       path.join(__dirname, 'erp', 'administrative', 'help-desk', 'help-desk.schema.sql'),
       path.join(__dirname, 'erp', 'administrative', 'student-admission', 'student-admission.schema.sql'),
-      path.join(__dirname, 'erp', 'Admission', 'enrollment', 'enrollment.schema.sql'),
+      path.join(__dirname, 'erp', 'admission', 'enrollment', 'enrollment.schema.sql'),
     ];
 
     for (const schemaPath of schemaPaths) {
@@ -191,7 +188,6 @@ app.use("/api/admissions/enrollment", enrollmentRoutes);
 app.use("/api/admissions/merit", meritRoutes);
 app.use("/api/admissions/seats", seatRoutes);
 app.use("/api/administrative", administrativeRoutes);
-app.use("/api/admission-legacy", admissionRoutes);
 console.log('✅ Administrative, Enrollment, Merit, and Seat routes registered');
 // Virtual Sandbox API
 app.use('/api/sandbox', sandboxRoutes);

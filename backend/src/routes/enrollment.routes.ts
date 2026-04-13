@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { asyncHandler } from '../middleware/error.middleware.js';
 import { authenticateToken, AuthenticatedRequest } from '../middleware/auth.middleware.js';
 import { validateRequired, validateUUID } from '../middleware/validation.middleware.js';
-import { EnrollmentModel } from '../erp/Admission/enrollment/enrollment.model.js';
+import { EnrollmentModel } from '../erp/admission/enrollment/enrollment.model.js';
 import { ApiError } from '../utils/apiError.js';
 
 const router = Router();
