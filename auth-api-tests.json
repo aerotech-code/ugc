@@ -1,0 +1,151 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Authentication API Tests",
+  "dateExported": "2026-03-19T00:00:00.000Z",
+  "version": "1.1",
+  "folders": [
+    {
+      "name": "Authentication",
+      "requests": [
+        {
+          "name": "1. Register New User",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/v1/users/register",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "json",
+            "json": {
+              "email": "student@example.com",
+              "password": "SecurePass123!",
+              "firstName": "John",
+              "lastName": "Doe",
+              "role": "applicant"
+            }
+          },
+          "tests": "if(response.status === 201) {\n  const json = JSON.parse(response.body);\n  if(json.data.token) {\n    tc.setVariable('authToken', json.data.token);\n    tc.setVariable('userId', json.data.user.id);\n  }\n}"
+        },
+        {
+          "name": "2. Login User",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/v1/users/login",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "json",
+            "json": {
+              "email": "student@example.com",
+              "password": "SecurePass123!"
+            }
+          },
+          "tests": "if(response.status === 200) {\n  const json = JSON.parse(response.body);\n  if(json.data.token) {\n    tc.setVariable('authToken', json.data.token);\n    tc.setVariable('userId', json.data.user.id);\n  }\n}"
+        },
+        {
+          "name": "3. Get User Profile",
+          "method": "GET",
+          "url": "{{baseUrl}}/api/v1/users/profile?userId={{userId}}",
+          "headers": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{authToken}}"
+            }
+          ]
+        },
+        {
+          "name": "4. Update User Profile",
+          "method": "PATCH",
+          "url": "{{baseUrl}}/api/v1/users/profile",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Authorization",
+              "value": "Bearer {{authToken}}"
+            }
+          ],
+          "body": {
+            "mode": "json",
+            "json": {
+              "userId": "{{userId}}",
+              "firstName": "John Updated",
+              "lastName": "Doe Updated",
+              "department": "Computer Science",
+              "position": "Student"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Users (if needed)",
+      "requests": [
+        {
+          "name": "Register Admin User",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/v1/users/register",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "json",
+            "json": {
+              "email": "admin@example.com",
+              "password": "AdminPass123!",
+              "firstName": "Admin",
+              "lastName": "User",
+              "role": "admin"
+            }
+          }
+        },
+        {
+          "name": "Register Reviewer User",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/v1/users/register",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "json",
+            "json": {
+              "email": "reviewer@example.com",
+              "password": "ReviewerPass123!",
+              "firstName": "Reviewer",
+              "lastName": "User",
+              "role": "reviewer"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "name": "authToken",
+      "value": ""
+    },
+    {
+      "name": "userId",
+      "value": ""
+    }
+  ]
+}

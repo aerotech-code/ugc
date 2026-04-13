@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { query } from '../db/postgres.js';
 import { asyncHandler, createError } from '../middleware/error.middleware.js';
 import { authenticateToken, requireOwnershipOrAdmin, AuthenticatedRequest } from '../middleware/auth.middleware.js';
 import { validateRequired, validateEmail, validateEnum, validatePassword, isValidUUID } from '../middleware/validation.middleware.js';
 import { ApiResponse, User } from '../types/index.js';
+import { generateAccessToken, generateRefreshToken } from '../utils/jwt.js';
 
 const router = Router();
 
@@ -45,15 +45,8 @@ router.post('/register', asyncHandler(async (req, res) => {
 
   const user = result.rows[0];
 
-  // Generate JWT
-  const jwtSecret = process.env.JWT_SECRET;
-  if (!jwtSecret) {
-    throw createError('JWT secret not configured', 500);
-  }
-  
-  const payload = { id: user.id, email: user.email, role: user.role };
-  const expiresIn: string | number = process.env.JWT_EXPIRES_IN || '7d';
-  const token = jwt.sign(payload, jwtSecret, { expiresIn } as Record<string, unknown>);
+  // Generate JWT using utility functions
+  const token = generateAccessToken({ userId: user.id, role: user.role });
 
   res.status(201).json({
     success: true,
@@ -94,15 +87,8 @@ router.post('/login', asyncHandler(async (req, res) => {
     throw createError('Invalid credentials', 401);
   }
 
-  // Generate JWT
-  const jwtSecret = process.env.JWT_SECRET;
-  if (!jwtSecret) {
-    throw createError('JWT secret not configured', 500);
-  }
-  
-  const payload = { id: user.id, email: user.email, role: user.role };
-  const expiresIn: string | number = process.env.JWT_EXPIRES_IN || '7d';
-  const token = jwt.sign(payload, jwtSecret, { expiresIn } as Record<string, unknown>);
+  // Generate JWT using utility functions
+  const token = generateAccessToken({ userId: user.id, role: user.role });
 
   res.json({
     success: true,
