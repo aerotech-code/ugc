@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: chatpass123
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./src/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./frontend/src/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     ports:
       - "5432:5432"
     healthcheck:
@@ -34,7 +34,7 @@ services:
 
   # Backend API
   backend:
-    build: .
+    build: ./backend
     ports:
       - "4000:4000"
     environment:
@@ -53,7 +53,7 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - .:/app
+      - ./backend:/app
       - /app/node_modules
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
