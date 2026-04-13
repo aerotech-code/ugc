@@ -4,12 +4,12 @@ import { asyncHandler, createError } from '../middleware/error.middleware.js';
 import { requireAcademicsContext, AcademicsRequest } from '../erp/academics/academics-context.middleware.js';
 import { validateRequired, validateUUID } from '../middleware/validation.middleware.js';
 
-import CourseModel from '../erp/academics/academics-course.model.js';
-import SyllabusModel from '../erp/academics/academics-syllabus.model.js';
-import CreditModel from '../erp/academics/academics-credit.model.js';
-import FeedbackModel from '../erp/academics/academics-feedback.model.js';
-import TimetableModel from '../erp/academics/academics-timetable.model.js';
-import AssignmentModel from '../erp/academics/academics-assignment.model.js';
+import CourseModel from '../erp/academics/course/academics-course.model.js';
+import SyllabusModel from '../erp/academics/syllabus/academics-syllabus.model.js';
+import CreditModel from '../erp/academics/credit/academics-credit.model.js';
+import FeedbackModel from '../erp/academics/feedback/academics-feedback.model.js';
+import TimetableModel from '../erp/academics/timetable/academics-timetable.model.js';
+import AssignmentModel from '../erp/academics/assignment/academics-assignment.model.js';
 
 const router = Router();
 

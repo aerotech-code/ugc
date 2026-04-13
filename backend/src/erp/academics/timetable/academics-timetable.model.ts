@@ -1,6 +1,6 @@
-import { query } from '../../db/postgres.js';
-import { createError } from '../../middleware/error.middleware.js';
-import type { AcademicsContext } from './academics-context.middleware.js';
+import { query } from '../../../db/postgres.js';
+import { createError } from '../../../middleware/error.middleware.js';
+import type { AcademicsContext } from '../academics-context.middleware.js';
 
 type JsonMap = Record<string, any>;
 
@@ -9,7 +9,7 @@ const pagination = (page?: unknown, limit?: unknown) => {
   const limitNum = Math.min(Math.max(Number(limit) || 20, 1), 100);
   return { page: pageNum, limit: limitNum, offset: (pageNum - 1) * limitNum };
 };
-
+3
 const TimetableModel = {
   async create(context: AcademicsContext, payload: JsonMap, userId: string) {
     const result = await query(

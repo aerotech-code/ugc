@@ -1,8 +1,8 @@
 import { Response, Router } from 'express';
-import { authenticateToken } from '../../middleware/auth.middleware.js';
-import { asyncHandler, createError } from '../../middleware/error.middleware.js';
-import { requireAcademicsContext, AcademicsRequest } from './academics-context.middleware.js';
-import { validateRequired, validateUUID } from '../../middleware/validation.middleware.js';
+import { authenticateToken } from '../../../middleware/auth.middleware.js';
+import { asyncHandler, createError } from '../../../middleware/error.middleware.js';
+import { requireAcademicsContext, AcademicsRequest } from '../academics-context.middleware.js';
+import { validateRequired, validateUUID } from '../../../middleware/validation.middleware.js';
 import FeedbackModel from './academics-feedback.model.js';
 
 const router = Router();
