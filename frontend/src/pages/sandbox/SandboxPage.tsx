@@ -199,7 +199,6 @@ export function SandboxPage() {
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [executionTime, setExecutionTime] = useState(0);
-  const [executionPhase, setExecutionPhase] = useState<string | null>(null);
 
   const handleLanguageChange = (newLang: string) => {
     setLanguage(newLang);
@@ -210,7 +209,6 @@ export function SandboxPage() {
   const handleRun = async () => {
     setIsRunning(true);
     setOutput('');
-    setExecutionPhase(null);
 
     // Set appropriate phase message based on language
     const phaseMessages: Record<string, string> = {
@@ -224,7 +222,7 @@ export function SandboxPage() {
 
     const languagePhase = phaseMessages[language];
     if (languagePhase) {
-      setExecutionPhase(languagePhase);
+      // phase handling
     }
 
     try {
@@ -249,7 +247,6 @@ export function SandboxPage() {
       toast.error(errorMsg);
     } finally {
       setIsRunning(false);
-      setExecutionPhase(null);
     }
   };
 

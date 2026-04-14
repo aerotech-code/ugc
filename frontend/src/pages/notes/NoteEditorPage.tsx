@@ -312,17 +312,17 @@ export function NoteEditorPage() {
             id="public"
             checked={isPublic}
             onCheckedChange={setIsPublic}
-            title={isPublic ? 'Note is public' : 'Note is private'}
+            aria-label={isPublic ? 'Note is public' : 'Note is private'}
           />
           <Label htmlFor="public" className="flex items-center gap-1 text-sm cursor-pointer">
             {isPublic ? (
               <>
-                <Globe title="Public" className="w-4 h-4" />
+                <Globe aria-label="Public" className="w-4 h-4" />
                 Public
               </>
             ) : (
               <>
-                <Lock title="Private" className="w-4 h-4" />
+                <Lock aria-label="Private" className="w-4 h-4" />
                 Private
               </>
             )}

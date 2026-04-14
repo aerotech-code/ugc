@@ -113,9 +113,9 @@ export function NotesPage() {
                   </h3>
                   <div className="flex gap-2 ml-2">
                     {note.isPublic ? (
-                      <Globe title="Public note" className="w-4 h-4 text-edu-green-600" />
+                      <Globe aria-label="Public note" className="w-4 h-4 text-edu-green-600" />
                     ) : (
-                      <Lock title="Private note" className="w-4 h-4 text-edu-purple-300" />
+                      <Lock aria-label="Private note" className="w-4 h-4 text-edu-purple-300" />
                     )}
                   </div>
                 </div>

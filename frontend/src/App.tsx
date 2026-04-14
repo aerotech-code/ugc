@@ -25,8 +25,17 @@ import { QuizzesPage } from '@/pages/quizzes/QuizzesPage';
 import { QuizTakingPage } from '@/pages/quizzes/QuizTakingPage';
 import { TextbooksPage } from '@/pages/textbooks/TextbooksPage';
 import { SandboxPage } from '@/pages/sandbox/SandboxPage';
-import ERPPage from '@/pages/erp/ERPPage';
 import InstitutePage from '@/pages/institute/InstitutePage';
+import { ERPLayout } from '@/components/erp/layout/ERPLayout';
+import { ERPLoginPage } from '@/pages/erp/auth/LoginPage';
+import { DashboardPage as ERPDashboardPage } from '@/pages/erp/dashboard/DashboardPage';
+import { SemestersPage } from '@/pages/erp/semesters/SemestersPage';
+import { ExamsPage } from '@/pages/erp/exams/ExamsPage';
+import { ResultsPage } from '@/pages/erp/results/ResultsPage';
+import { SyllabusPage } from '@/pages/erp/syllabus/SyllabusPage';
+import { FeedbackPage } from '@/pages/erp/feedback/FeedbackPage';
+import { LeaveRecordsPage } from '@/pages/erp/administrative/LeaveRecordsPage';
+import { HelpDeskPage } from '@/pages/erp/administrative/HelpDeskPage';
 import { ProfilePage } from '@/pages/profile/ProfilePage';
 import { SettingsPage } from '@/pages/settings/SettingsPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
@@ -106,8 +115,18 @@ function App() {
           <Route path="/sandbox" element={<SandboxPage />} />
           
           {/* ERP Routes */}
-          <Route path="/erp" element={<ERPPage />} />
-
+          <Route path="/erp/login" element={<ERPLoginPage />} />
+          <Route path="/erp" element={<ERPLayout />}>
+            <Route index element={<Navigate to="/erp/dashboard" replace />} />
+            <Route path="dashboard" element={<ERPDashboardPage />} />
+            <Route path="semesters" element={<SemestersPage />} />
+            <Route path="exams" element={<ExamsPage />} />
+            <Route path="results" element={<ResultsPage />} />
+            <Route path="syllabus" element={<SyllabusPage />} />
+            <Route path="feedback" element={<FeedbackPage />} />
+            <Route path="leave" element={<LeaveRecordsPage />} />
+            <Route path="helpdesk" element={<HelpDeskPage />} />
+          </Route>
           {/* Institute Management Routes */}
           <Route path="/institute" element={<InstitutePage />} />
           
